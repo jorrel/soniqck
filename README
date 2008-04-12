@@ -1,5 +1,65 @@
-== Soniqck
+= Soniqck
 
-Soniqck the Hedgehog
 
-Rewrite of hedeghog ticketing for rails 2.0
+== Overview
+
+  Soniqck the Hedgehog
+
+  Soniqck is a rewrite of hedeghog ticketing for rails 2.0
+
+
+== Primary Goals
+
+=== ModelAutomator rewrite
+
+  ModelAutomator will be rewritted as AutomatedController
+
+  desired usage:
+
+     class PostsController < ApplicationController
+       automate  # will automatically infer that the model is Post
+
+       private
+
+         # able to override specific responses
+         def respond_to_xml_on_index
+           render :text => @posts.to_xml
+         end
+     end
+
+  new find_or_initialize:
+
+     class CommentsController < ApplicationController
+       # @post = Post.find(params[:post_id])
+       # @comment = @post.comments.find(params[:id])
+       find_or_initialize :comment, :belongs_to => :post
+     end
+
+     class CitiesController < ApplicationController
+       # @country = Country.find(params[:country_id])
+       # @city = @country.towns.custom_finder(params[:id], params[:another_field])
+       find_or_initialize :city,
+                          :belongs_to => :country, :as => :town,
+                          :finder => :custom_finder, :id => [:id, :another_field]
+     end
+
+     # Maybe too much, but it would be nice
+     class ParagraphController < ApplicationController
+       # @author = Author.find(params[:author_id])
+       # @book = @author.works.find(params[:book_id])
+       # @page = @book.pages.find(params[:page_id])
+       # @paragraph => @page.paragraphs.find(params[:id])
+       find_or_initialize :paragraph,
+                          :belongs_to => {
+                            :page => {
+                            :belongs_to => {
+                              :book => {
+                              :belongs_to => :author, :as => :work
+                              }
+                            }}
+                          }
+     end
+
+=== Queueing
+
+  Usage of QueueFu or similar for sending email
