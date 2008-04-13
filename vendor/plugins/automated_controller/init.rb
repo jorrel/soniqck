@@ -1,1 +1,1 @@
-# Include hook code here
+ActionController::Base.__send__ :include, AutomatedController

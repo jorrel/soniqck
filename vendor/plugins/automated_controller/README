@@ -1,13 +1,7 @@
 AutomatedController
 ===================
 
-Introduction goes here.
+Controller Automation
 
 
-Example
-=======
-
-Example goes here.
-
-
-Copyright (c) 2008 [name of plugin creator], released under the MIT license
+Tests are in Soniqck controller tests
